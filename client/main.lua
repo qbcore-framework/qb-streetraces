@@ -62,7 +62,7 @@ Citizen.CreateThread(function()
             if RaceId ~= 0 and InRace then
                 if #(pos - vector3(Races[RaceId].endx, Races[RaceId].endy, pos.z)) < 250.0 and Races[RaceId].started then
                     DrawText3Ds(Races[RaceId].endx, Races[RaceId].endy, pos.z + 0.98, "FINISH")
-                    if #(pos - vector3(Races[RaceId].endx, Races[RaceId].endy, pos.z, true) < 15.0 then
+                    if #(pos - vector3(Races[RaceId].endx, Races[RaceId].endy, pos.z)) < 15.0 then
                         TriggerServerEvent("qb-streetraces:RaceWon", RaceId)
                         InRace = false
                     end
