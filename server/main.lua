@@ -1,15 +1,3 @@
-QBCore = nil
-
-
-TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
-
-local ItemList = {
-    ["cash"] = "cash"
-}
-
-
---CODE
-
 local Races = {}
 RegisterServerEvent('qb-streetraces:NewRace')
 AddEventHandler('qb-streetraces:NewRace', function(RaceTable)
