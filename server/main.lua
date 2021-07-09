@@ -98,12 +98,12 @@ QBCore.Commands.Add("startrace", "Start The Race", {}, false, function(source, a
 end)
 
 function CancelRace(source)
-    local RaceId = GetCreatedRace(GetPlayerIdentifiers(source)[1])
+    local RaceId = GetCreatedRace(QBCore.Functions.GetIdentifier(source, 'license'))
     local Player = QBCore.Functions.GetPlayer(source)
 
     if RaceId ~= 0 then
         for key, race in pairs(Races) do
-            if Races[key] ~= nil and Races[key].creator == Player.PlayerData.steam then
+            if Races[key] ~= nil and Races[key].creator == Player.PlayerData.license then
                 if not Races[key].started then
                     for _, iden in pairs(Races[key].joined) do
                         local xdPlayer = QBCore.Functions.GetPlayer(iden)
