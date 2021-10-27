@@ -1,3 +1,5 @@
+local QBCore = exports['qb-core']:GetCoreObject()
+
 local Races = {}
 local InRace = false
 local RaceId = 0
@@ -23,7 +25,7 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(7)
         if Races ~= nil then
-            -- Nog geen race
+            -- No race yet
             local pos = GetEntityCoords(PlayerPedId(), true)
             if RaceId == 0 then
                 for k, race in pairs(Races) do
@@ -35,16 +37,16 @@ Citizen.CreateThread(function()
                             end
                         end
                     end
-                    
+
                 end
             end
-            -- In race nog niet gestart
+            -- Not started in race yet
             if RaceId ~= 0 and not InRace then
                 if #(pos - vector3(Races[RaceId].startx, Races[RaceId].starty, Races[RaceId].startz)) < 15.0 and not Races[RaceId].started then
                     DrawText3Ds(Races[RaceId].startx, Races[RaceId].starty, Races[RaceId].startz, "Race Will Start Soon")
                 end
             end
-            -- In race en gestart
+            -- In race and started
             if RaceId ~= 0 and InRace then
                 if #(pos - vector3(Races[RaceId].endx, Races[RaceId].endy, pos.z)) < 250.0 and Races[RaceId].started then
                     DrawText3Ds(Races[RaceId].endx, Races[RaceId].endy, pos.z + 0.98, "FINISH")
@@ -54,7 +56,7 @@ Citizen.CreateThread(function()
                     end
                 end
             end
-            
+
             if ShowCountDown then
                 if #(pos - vector3(Races[RaceId].startx, Races[RaceId].starty, Races[RaceId].startz)) < 15.0 and Races[RaceId].started then
                     DrawText3Ds(Races[RaceId].startx, Races[RaceId].starty, Races[RaceId].startz, "Race start in ~g~"..RaceCount)
@@ -93,20 +95,20 @@ AddEventHandler('qb-streetraces:CreateRace', function(amount)
     local pos = GetEntityCoords(PlayerPedId(), true)
     local WaypointHandle = GetFirstBlipInfoId(8)
     if DoesBlipExist(WaypointHandle) then
-        local cx, cy, cz = table.unpack(Citizen.InvokeNative(0xFA7C7F0AADF25D09, WaypointHandle, Citizen.ReturnResultAnyway(), Citizen.ResultAsVector()))
-        unusedBool, groundZ = GetGroundZFor_3dCoord(cx, cy, 99999.0, 1)
-        if #(pos - vector3(cx, cy, groundZ)) > 500.0 then
+        local c = GetBlipInfoIdCoord(WaypointHandle, Citizen.ReturnResultAnyway(), Citizen.ResultAsVector())
+        unusedBool, groundZ = GetGroundZFor_3dCoord(c[1], c[2], 99999.0, 1)
+        if #(pos - vector3(c[1], c[2], groundZ)) > 500.0 then
             local race = {
-                creator = nil, 
-                started = false, 
-                startx = pos.x, 
-                starty = pos.y, 
-                startz = pos.z, 
-                endx = cx, 
-                endy = cy, 
-                endz = groundZ, 
-                amount = amount, 
-                pot = amount, 
+                creator = nil,
+                started = false,
+                startx = pos.x,
+                starty = pos.y,
+                startz = pos.z,
+                endx = c[1],
+                endy = c[2],
+                endz = groundZ,
+                amount = amount,
+                pot = amount,
                 joined = {}
             }
             TriggerServerEvent("qb-streetraces:NewRace", race)
@@ -133,7 +135,6 @@ end)
 function RaceCountDown()
     ShowCountDown = true
     while RaceCount ~= 0 do
-        local pos = GetEntityCoords(PlayerPedId(), true)
         FreezeEntityPosition(GetVehiclePedIsIn(PlayerPedId(), true), true)
         PlaySound(-1, "slow", "SHORT_PLAYER_SWITCH_SOUND_SET", 0, 0, 1)
         QBCore.Functions.Notify(RaceCount, 'primary', 800)

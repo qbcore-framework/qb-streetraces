@@ -1,3 +1,5 @@
+local QBCore = exports['qb-core']:GetCoreObject()
+
 local Races = {}
 RegisterServerEvent('qb-streetraces:NewRace')
 AddEventHandler('qb-streetraces:NewRace', function(RaceTable)
@@ -50,12 +52,10 @@ end)
 QBCore.Commands.Add("createrace", "Start A Street Race", {{name="amount", help="The Stake Amount For The Race."}}, false, function(source, args)
     local src = source
     local amount = tonumber(args[1])
-    local Player = QBCore.Functions.GetPlayer(src)
-
     if GetJoinedRace(QBCore.Functions.GetIdentifier(src, 'license')) == 0 then
         TriggerClientEvent('qb-streetraces:CreateRace', src, amount)
     else
-        TriggerClientEvent('QBCore:Notify', src, "You Are Already In A Race", 'error')    
+        TriggerClientEvent('QBCore:Notify', src, "You Are Already In A Race", 'error')
     end
 end)
 
@@ -66,10 +66,7 @@ end)
 
 QBCore.Commands.Add("quitrace", "Get Out Of A Race. (You Will NOT Get Your Money Back!)", {}, false, function(source, args)
     local src = source
-    local xPlayer = QBCore.Functions.GetPlayer(src)
     local RaceId = GetJoinedRace(QBCore.Functions.GetIdentifier(src, 'license'))
-    local zPlayer = QBCore.Functions.GetPlayer(Races[RaceId].creator)
-
     if RaceId ~= 0 then
         if GetCreatedRace(QBCore.Functions.GetIdentifier(src, 'license')) ~= RaceId then
             RemoveFromRace(QBCore.Functions.GetIdentifier(src, 'license'))
@@ -85,15 +82,15 @@ end)
 QBCore.Commands.Add("startrace", "Start The Race", {}, false, function(source, args)
     local src = source
     local RaceId = GetCreatedRace(QBCore.Functions.GetIdentifier(src, 'license'))
-    
+
     if RaceId ~= 0 then
-      
+
         Races[RaceId].started = true
         TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
         TriggerClientEvent("qb-streetraces:StartRace", -1, RaceId)
     else
         TriggerClientEvent('QBCore:Notify', src, "You Have Not Started A Race", 'error')
-        
+
     end
 end)
 
