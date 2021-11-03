@@ -9,7 +9,7 @@ AddEventHandler('qb-streetraces:NewRace', function(RaceTable)
     if xPlayer.Functions.RemoveMoney('cash', RaceTable.amount, "streetrace-created") then
         Races[RaceId] = RaceTable
         Races[RaceId].creator = QBCore.Functions.GetIdentifier(src, 'license')
-        table.insert(Races[RaceId].joined, QBCore.Functions.GetIdentifier(src, 'license'))
+        Races[RaceId].joined[#Races[RaceId].joined+1] = QBCore.Functions.GetIdentifier(src, 'license')
         TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
         TriggerClientEvent('qb-streetraces:SetRaceId', src, RaceId)
         TriggerClientEvent('QBCore:Notify', src, "You joind the race for €"..Races[RaceId].amount..",-", 'success')
@@ -34,7 +34,7 @@ AddEventHandler('qb-streetraces:JoinRace', function(RaceId)
     if zPlayer ~= nil then
         if xPlayer.PlayerData.money.cash >= Races[RaceId].amount then
             Races[RaceId].pot = Races[RaceId].pot + Races[RaceId].amount
-            table.insert(Races[RaceId].joined, QBCore.Functions.GetIdentifier(src, 'license'))
+            Races[RaceId].joined[#Races[RaceId].joined+1] = QBCore.Functions.GetIdentifier(src, 'license')
             if xPlayer.Functions.RemoveMoney('cash', Races[RaceId].amount, "streetrace-joined") then
                 TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
                 TriggerClientEvent('qb-streetraces:SetRaceId', src, RaceId)
