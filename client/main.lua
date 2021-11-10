@@ -1,5 +1,4 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-
 local Races = {}
 local InRace = false
 local RaceId = 0
