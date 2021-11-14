@@ -1,8 +1,8 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 
 local Races = {}
-RegisterServerEvent('qb-streetraces:NewRace')
-AddEventHandler('qb-streetraces:NewRace', function(RaceTable)
+
+RegisterNetEvent('qb-streetraces:NewRace', function(RaceTable)
     local src = source
     local RaceId = math.random(1000, 9999)
     local xPlayer = QBCore.Functions.GetPlayer(src)
@@ -16,8 +16,7 @@ AddEventHandler('qb-streetraces:NewRace', function(RaceTable)
     end
 end)
 
-RegisterServerEvent('qb-streetraces:RaceWon')
-AddEventHandler('qb-streetraces:RaceWon', function(RaceId)
+RegisterNetEvent('qb-streetraces:RaceWon', function(RaceId)
     local src = source
     local xPlayer = QBCore.Functions.GetPlayer(src)
     xPlayer.Functions.AddMoney('cash', Races[RaceId].pot, "race-won")
@@ -26,8 +25,7 @@ AddEventHandler('qb-streetraces:RaceWon', function(RaceId)
     TriggerClientEvent('qb-streetraces:RaceDone', -1, RaceId, GetPlayerName(src))
 end)
 
-RegisterServerEvent('qb-streetraces:JoinRace')
-AddEventHandler('qb-streetraces:JoinRace', function(RaceId)
+RegisterNetEvent('qb-streetraces:JoinRace', function(RaceId)
     local src = source
     local xPlayer = QBCore.Functions.GetPlayer(src)
     local zPlayer = QBCore.Functions.GetPlayer(Races[RaceId].creator)
