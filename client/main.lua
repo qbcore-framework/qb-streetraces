@@ -20,9 +20,9 @@ function DrawText3Ds(x, y, z, text)
     ClearDrawOrigin()
 end
 
-Citizen.CreateThread(function()
+CreateThread(function()
     while true do
-        Citizen.Wait(7)
+        Wait(7)
         if Races ~= nil then
             -- No race yet
             local pos = GetEntityCoords(PlayerPedId(), true)
@@ -65,8 +65,7 @@ Citizen.CreateThread(function()
     end
 end)
 
-RegisterNetEvent('qb-streetraces:StartRace')
-AddEventHandler('qb-streetraces:StartRace', function(race)
+RegisterNetEvent('qb-streetraces:StartRace', function(race)
     if RaceId ~= 0 and RaceId == race then
         SetNewWaypoint(Races[RaceId].endx, Races[RaceId].endy)
         InRace = true
@@ -74,8 +73,7 @@ AddEventHandler('qb-streetraces:StartRace', function(race)
     end
 end)
 
-RegisterNetEvent('qb-streetraces:RaceDone')
-AddEventHandler('qb-streetraces:RaceDone', function(race, winner)
+RegisterNetEvent('qb-streetraces:RaceDone', function(race, winner)
     if RaceId ~= 0 and RaceId == race then
         RaceId = 0
         InRace = false
@@ -83,18 +81,16 @@ AddEventHandler('qb-streetraces:RaceDone', function(race, winner)
     end
 end)
 
-RegisterNetEvent('qb-streetraces:StopRace')
-AddEventHandler('qb-streetraces:StopRace', function()
+RegisterNetEvent('qb-streetraces:StopRace', function()
     RaceId = 0
     InRace = false
 end)
 
-RegisterNetEvent('qb-streetraces:CreateRace')
-AddEventHandler('qb-streetraces:CreateRace', function(amount)
+RegisterNetEvent('qb-streetraces:CreateRace', function(amount)
     local pos = GetEntityCoords(PlayerPedId(), true)
     local WaypointHandle = GetFirstBlipInfoId(8)
     if DoesBlipExist(WaypointHandle) then
-        local c = GetBlipInfoIdCoord(WaypointHandle, Citizen.ReturnResultAnyway(), Citizen.ResultAsVector())
+        local c = GetBlipInfoIdCoord(WaypointHandle, ReturnResultAnyway(), ResultAsVector())
         unusedBool, groundZ = GetGroundZFor_3dCoord(c[1], c[2], 99999.0, 1)
         if #(pos - vector3(c[1], c[2], groundZ)) > 500.0 then
             local race = {
@@ -120,13 +116,11 @@ AddEventHandler('qb-streetraces:CreateRace', function(amount)
     end
 end)
 
-RegisterNetEvent('qb-streetraces:SetRace')
-AddEventHandler('qb-streetraces:SetRace', function(RaceTable)
+RegisterNetEvent('qb-streetraces:SetRace', function(RaceTable)
     Races = RaceTable
 end)
 
-RegisterNetEvent('qb-streetraces:SetRaceId')
-AddEventHandler('qb-streetraces:SetRaceId', function(race)
+RegisterNetEvent('qb-streetraces:SetRaceId', function(race)
     RaceId = race
     SetNewWaypoint(Races[RaceId].endx, Races[RaceId].endy)
 end)
@@ -137,7 +131,7 @@ function RaceCountDown()
         FreezeEntityPosition(GetVehiclePedIsIn(PlayerPedId(), true), true)
         PlaySound(-1, "slow", "SHORT_PLAYER_SWITCH_SOUND_SET", 0, 0, 1)
         QBCore.Functions.Notify(RaceCount, 'primary', 800)
-        Citizen.Wait(1000)
+        Wait(1000)
         RaceCount = RaceCount - 1
     end
     ShowCountDown = false
@@ -145,4 +139,3 @@ function RaceCountDown()
     FreezeEntityPosition(GetVehiclePedIsIn(PlayerPedId(), true), false)
     QBCore.Functions.Notify("GOOOOOOOOO!!!")
 end
-
