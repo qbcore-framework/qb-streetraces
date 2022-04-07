@@ -90,7 +90,7 @@ RegisterNetEvent('qb-streetraces:CreateRace', function(amount)
     local pos = GetEntityCoords(PlayerPedId(), true)
     local WaypointHandle = GetFirstBlipInfoId(8)
     if DoesBlipExist(WaypointHandle) then
-        local c = GetBlipInfoIdCoord(WaypointHandle, ReturnResultAnyway(), ResultAsVector())
+        local c = GetBlipInfoIdCoord(WaypointHandle, Citizen.ReturnResultAnyway(), Citizen.ResultAsVector())
         unusedBool, groundZ = GetGroundZFor_3dCoord(c[1], c[2], 99999.0, 1)
         if #(pos - vector3(c[1], c[2], groundZ)) > 500.0 then
             local race = {
