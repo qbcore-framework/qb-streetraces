@@ -57,12 +57,11 @@ QBCore.Commands.Add("createrace", "Start A Street Race", {{name="amount", help="
     end
 end)
 
-QBCore.Commands.Add("stoprace", "Stop The Race You Created", {}, false, function(source, args)
-    local src = source
-    CancelRace(src)
+QBCore.Commands.Add("stoprace", "Stop The Race You Created", {}, false, function(source, _)
+    CancelRace(source)
 end)
 
-QBCore.Commands.Add("quitrace", "Get Out Of A Race. (You Will NOT Get Your Money Back!)", {}, false, function(source, args)
+QBCore.Commands.Add("quitrace", "Get Out Of A Race. (You Will NOT Get Your Money Back!)", {}, false, function(source, _)
     local src = source
     local RaceId = GetJoinedRace(QBCore.Functions.GetIdentifier(src, 'license'))
     if RaceId ~= 0 then
@@ -77,7 +76,7 @@ QBCore.Commands.Add("quitrace", "Get Out Of A Race. (You Will NOT Get Your Money
     end
 end)
 
-QBCore.Commands.Add("startrace", "Start The Race", {}, false, function(source, args)
+QBCore.Commands.Add("startrace", "Start The Race", {}, false, function(source, _)
     local src = source
     local RaceId = GetCreatedRace(QBCore.Functions.GetIdentifier(src, 'license'))
 
@@ -97,7 +96,7 @@ function CancelRace(source)
     local Player = QBCore.Functions.GetPlayer(source)
 
     if RaceId ~= 0 then
-        for key, race in pairs(Races) do
+        for key, _ in pairs(Races) do
             if Races[key] ~= nil and Races[key].creator == Player.PlayerData.license then
                 if not Races[key].started then
                     for _, iden in pairs(Races[key].joined) do
@@ -121,7 +120,7 @@ function CancelRace(source)
 end
 
 function RemoveFromRace(identifier)
-    for key, race in pairs(Races) do
+    for key, _ in pairs(Races) do
         if Races[key] ~= nil and not Races[key].started then
             for i, iden in pairs(Races[key].joined) do
                 if iden == identifier then
@@ -133,7 +132,7 @@ function RemoveFromRace(identifier)
 end
 
 function GetJoinedRace(identifier)
-    for key, race in pairs(Races) do
+    for key, _ in pairs(Races) do
         if Races[key] ~= nil and not Races[key].started then
             for _, iden in pairs(Races[key].joined) do
                 if iden == identifier then
@@ -146,7 +145,7 @@ function GetJoinedRace(identifier)
 end
 
 function GetCreatedRace(identifier)
-    for key, race in pairs(Races) do
+    for key, _ in pairs(Races) do
         if Races[key] ~= nil and Races[key].creator == identifier and not Races[key].started then
             return key
         end

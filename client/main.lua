@@ -27,7 +27,7 @@ CreateThread(function()
             -- No race yet
             local pos = GetEntityCoords(PlayerPedId(), true)
             if RaceId == 0 then
-                for k, race in pairs(Races) do
+                for k, _ in pairs(Races) do
                     if Races[k] ~= nil then
                         if #(pos - vector3(Races[k].startx, Races[k].starty, Races[k].startz)) < 15.0 and not Races[k].started then
                             DrawText3Ds(Races[k].startx, Races[k].starty, Races[k].startz, "[~g~H~w~] To Join The Race (~g~$"..Races[k].amount..",-~w~)")
@@ -90,18 +90,17 @@ RegisterNetEvent('qb-streetraces:CreateRace', function(amount)
     local pos = GetEntityCoords(PlayerPedId(), true)
     local WaypointHandle = GetFirstBlipInfoId(8)
     if DoesBlipExist(WaypointHandle) then
-        local c = GetBlipInfoIdCoord(WaypointHandle, Citizen.ReturnResultAnyway(), Citizen.ResultAsVector())
-        unusedBool, groundZ = GetGroundZFor_3dCoord(c[1], c[2], 99999.0, 1)
-        if #(pos - vector3(c[1], c[2], groundZ)) > 500.0 then
+        local c = GetBlipInfoIdCoord(WaypointHandle)
+        if #(pos - c) > 500.0 then
             local race = {
                 creator = nil,
                 started = false,
                 startx = pos.x,
                 starty = pos.y,
                 startz = pos.z,
-                endx = c[1],
-                endy = c[2],
-                endz = groundZ,
+                endx = c.x,
+                endy = c.y,
+                endz = c.z,
                 amount = amount,
                 pot = amount,
                 joined = {}
