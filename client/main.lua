@@ -27,7 +27,7 @@ CreateThread(function()
             -- No race yet
             local pos = GetEntityCoords(PlayerPedId(), true)
             if RaceId == 0 then
-                for k, _ in pairs(Races) do
+                for k in pairs(Races) do
                     if Races[k] ~= nil then
                         if #(pos - vector3(Races[k].startx, Races[k].starty, Races[k].startz)) < 15.0 and not Races[k].started then
                             DrawText3Ds(Races[k].startx, Races[k].starty, Races[k].startz, "[~g~H~w~] To Join The Race (~g~$"..Races[k].amount..",-~w~)")
