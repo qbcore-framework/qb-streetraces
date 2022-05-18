@@ -96,7 +96,7 @@ function CancelRace(source)
     local Player = QBCore.Functions.GetPlayer(source)
 
     if RaceId ~= 0 then
-        for key, _ in pairs(Races) do
+        for key in pairs(Races) do
             if Races[key] ~= nil and Races[key].creator == Player.PlayerData.license then
                 if not Races[key].started then
                     for _, iden in pairs(Races[key].joined) do
