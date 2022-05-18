@@ -76,7 +76,7 @@ QBCore.Commands.Add("quitrace", "Get Out Of A Race. (You Will NOT Get Your Money
     end
 end)
 
-QBCore.Commands.Add("startrace", "Start The Race", {}, false, function(source, _)
+QBCore.Commands.Add("startrace", "Start The Race", {}, false, function(source)
     local src = source
     local RaceId = GetCreatedRace(QBCore.Functions.GetIdentifier(src, 'license'))
 
