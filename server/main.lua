@@ -145,7 +145,7 @@ function GetJoinedRace(identifier)
 end
 
 function GetCreatedRace(identifier)
-    for key, _ in pairs(Races) do
+    for key in pairs(Races) do
         if Races[key] ~= nil and Races[key].creator == identifier and not Races[key].started then
             return key
         end
