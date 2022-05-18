@@ -120,7 +120,7 @@ function CancelRace(source)
 end
 
 function RemoveFromRace(identifier)
-    for key, _ in pairs(Races) do
+    for key in pairs(Races) do
         if Races[key] ~= nil and not Races[key].started then
             for i, iden in pairs(Races[key].joined) do
                 if iden == identifier then
