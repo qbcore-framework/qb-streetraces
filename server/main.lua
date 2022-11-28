@@ -1,5 +1,4 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-
 local Races = {}
 
 RegisterNetEvent('qb-streetraces:NewRace', function(RaceTable)
