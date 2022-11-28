@@ -95,7 +95,6 @@ QBCore.Commands.Add("startrace", "Start The Race", {}, false, function(source)
         TriggerClientEvent("qb-streetraces:StartRace", -1, RaceId)
     else
         TriggerClientEvent('QBCore:Notify', src, "You Have Not Started A Race", 'error')
-
     end
 end)
 
