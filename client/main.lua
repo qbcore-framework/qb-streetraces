@@ -77,7 +77,11 @@ RegisterNetEvent('qb-streetraces:RaceDone', function(race, winner)
     if RaceId ~= 0 and RaceId == race then
         RaceId = 0
         InRace = false
-        QBCore.Functions.Notify("Race Is Over! The Winner Is "..winner.. "!")
+        if Config.UseNoName then
+            QBCore.Functions.Notify("Race Is Over! Someone placed 1st!")
+        else
+            QBCore.Functions.Notify("Race Is Over! The Winner Is "..winner.. "!")
+        end
     end
 end)
 
@@ -136,5 +140,5 @@ function RaceCountDown()
     ShowCountDown = false
     RaceCount = 5
     FreezeEntityPosition(GetVehiclePedIsIn(PlayerPedId(), true), false)
-    QBCore.Functions.Notify("GOOOOOOOOO!!!")
+    QBCore.Functions.Notify("GO!")
 end

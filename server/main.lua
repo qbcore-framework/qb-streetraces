@@ -12,17 +12,24 @@ RegisterNetEvent('qb-streetraces:NewRace', function(RaceTable)
         Races[RaceId].joined[#Races[RaceId].joined+1] = QBCore.Functions.GetIdentifier(src, 'license')
         TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
         TriggerClientEvent('qb-streetraces:SetRaceId', src, RaceId)
-        TriggerClientEvent('QBCore:Notify', src, "You joind the race for €"..Races[RaceId].amount..",-", 'success')
+        TriggerClientEvent('QBCore:Notify', src, "You joined the race for $"..Races[RaceId].amount..".", 'success')
     end
 end)
 
 RegisterNetEvent('qb-streetraces:RaceWon', function(RaceId)
     local src = source
     local xPlayer = QBCore.Functions.GetPlayer(src)
+    local name =  (xPlayer.PlayerData.charinfo.firstname .. " " .. xPlayer.PlayerData.charinfo.lastname)-- Get Character name
     xPlayer.Functions.AddMoney('cash', Races[RaceId].pot, "race-won")
-    TriggerClientEvent('QBCore:Notify', src, "You won the race and €"..Races[RaceId].pot..",- recieved", 'success')
+    TriggerClientEvent('QBCore:Notify', src, "You won the race and $"..Races[RaceId].pot.."!", 'success')
     TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
-    TriggerClientEvent('qb-streetraces:RaceDone', -1, RaceId, GetPlayerName(src))
+    if Config.UseCharName then
+        TriggerClientEvent('qb-streetraces:RaceDone', -1, RaceId, name) -- Use Character name
+    elseif Config.UsePlayerName then
+        TriggerClientEvent('qb-streetraces:RaceDone', -1, RaceId, GetPlayerName(src)) -- Use Account name
+    else 
+        TriggerClientEvent('qb-streetraces:RaceDone', -1, RaceId, GetPlayerName(src)) -- Use Account name
+    end
 end)
 
 RegisterNetEvent('qb-streetraces:JoinRace', function(RaceId)
@@ -36,13 +43,14 @@ RegisterNetEvent('qb-streetraces:JoinRace', function(RaceId)
             if xPlayer.Functions.RemoveMoney('cash', Races[RaceId].amount, "streetrace-joined") then
                 TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
                 TriggerClientEvent('qb-streetraces:SetRaceId', src, RaceId)
+                TriggerClientEvent('qb-streetraces:BeginPhasing', src)
                 TriggerClientEvent('QBCore:Notify', zPlayer.PlayerData.source, GetPlayerName(src).." Joined the race", 'primary')
             end
         else
             TriggerClientEvent('QBCore:Notify', src, "You dont have enough cash", 'error')
         end
     else
-        TriggerClientEvent('QBCore:Notify', src, "The person wo made the race is offline!", 'error')
+        TriggerClientEvent('QBCore:Notify', src, "The person who made the race is offline!", 'error')
         Races[RaceId] = {}
     end
 end)
@@ -102,7 +110,7 @@ function CancelRace(source)
                     for _, iden in pairs(Races[key].joined) do
                         local xdPlayer = QBCore.Functions.GetPlayer(iden)
                             xdPlayer.Functions.AddMoney('cash', Races[key].amount, "race-cancelled")
-                            TriggerClientEvent('QBCore:Notify', xdPlayer.PlayerData.source, "Race Has Stopped, You Got Back $"..Races[key].amount.."", 'error')
+                            TriggerClientEvent('QBCore:Notify', xdPlayer.PlayerData.source, "Race Has Stopped, You Got Back $"..Races[key].amount..".", 'error')
                             TriggerClientEvent('qb-streetraces:StopRace', xdPlayer.PlayerData.source)
                             RemoveFromRace(iden)
                     end
