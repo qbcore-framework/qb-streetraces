@@ -49,7 +49,7 @@ RegisterNetEvent('qb-streetraces:JoinRace', function(RaceId)
             TriggerClientEvent('QBCore:Notify', src, "You dont have enough cash", 'error')
         end
     else
-        TriggerClientEvent('QBCore:Notify', src, "The person who made the race is offline!", 'error')
+        TriggerClientEvent('QBCore:Notify', src, "The person which made the race is offline!", 'error')
         Races[RaceId] = {}
     end
 end)
