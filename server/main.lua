@@ -24,10 +24,8 @@ RegisterNetEvent('qb-streetraces:RaceWon', function(RaceId)
     TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
     if Config.UseCharName then
         TriggerClientEvent('qb-streetraces:RaceDone', -1, RaceId, name) -- Use Character name
-    elseif Config.UsePlayerName then
-        TriggerClientEvent('qb-streetraces:RaceDone', -1, RaceId, GetPlayerName(src)) -- Use Account name
     else
-        TriggerClientEvent('qb-streetraces:RaceDone', -1, RaceId, GetPlayerName(src)) -- Use Account name
+        TriggerClientEvent('qb-streetraces:RaceDone', -1, RaceId, GetPlayerName(src)) -- Use Account name, acts as default
     end
 end)
 
