@@ -40,7 +40,6 @@ RegisterNetEvent('qb-streetraces:JoinRace', function(RaceId)
             if xPlayer.Functions.RemoveMoney('cash', Races[RaceId].amount, "streetrace-joined") then
                 TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
                 TriggerClientEvent('qb-streetraces:SetRaceId', src, RaceId)
-                TriggerClientEvent('qb-streetraces:BeginPhasing', src)
                 TriggerClientEvent('QBCore:Notify', zPlayer.PlayerData.source, GetPlayerName(src).." Joined the race", 'primary')
             end
         else
