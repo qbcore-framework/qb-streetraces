@@ -40,7 +40,7 @@ CreateThread(function()
             end
             -- Not started in race yet
             if RaceId ~= 0 and not InRace then
-                if #(pos - vector3(Races[RaceId].startx, Races[RaceId].starty, Races[RaceId].startz)) < 15.0 and not Races[RaceId].started then
+                if Races[RaceId] and #(pos - vector3(Races[RaceId].startx, Races[RaceId].starty, Races[RaceId].startz)) < 15.0 and not Races[RaceId].started then
                     DrawText3Ds(Races[RaceId].startx, Races[RaceId].starty, Races[RaceId].startz, "Race Will Start Soon")
                 end
             end
@@ -84,6 +84,8 @@ RegisterNetEvent('qb-streetraces:StopRace', function()
         action = "HIDE_UI"
     });
 end)
+
+
 
 RegisterNetEvent('qb-streetraces:CreateRace', function(amount)
     local pos = GetEntityCoords(PlayerPedId(), true)

@@ -75,11 +75,18 @@ QBCore.Commands.Add(Config.Commands.CancelRace, 'Stop The Race You Created', {},
     CancelRace(source)
 end)
 
-QBCore.Commands.Add(Config.Commands.QuitRace, 'Get Out Of A Race. (You will not get your money back!)', {}, false, function(source, _)
+QBCore.Commands.Add(Config.Commands.QuitRace, 'Leave A Race', {}, false, function(source, _)
     local src = source
     local RaceId = GetJoinedRace(QBCore.Functions.GetIdentifier(src, 'license'))
     if RaceId ~= 0 then
         if GetCreatedRace(QBCore.Functions.GetIdentifier(src, 'license')) ~= RaceId then
+            local xPlayer = QBCore.Functions.GetPlayer(src)
+            xPlayer.Functions.AddMoney('cash', Races[RaceId].amount, 'Race Quit')
+
+            Races[RaceId].pot = Races[RaceId].pot - Races[RaceId].amount
+            TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
+            
+            TriggerClientEvent('qb-streetraces:StopRace', src)
             RemoveFromRace(QBCore.Functions.GetIdentifier(src, 'license'))
             TriggerClientEvent('QBCore:Notify', src, 'You Have Stepped Out Of The Race! And You Lost Your Money', 'error')
         else
