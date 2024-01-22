@@ -47,9 +47,12 @@ RegisterNetEvent('qb-streetraces:JoinRace', function(RaceId)
     end
 end)
 
-QBCore.Commands.Add('createrace', 'Start A Street Race', { { name = 'amount', help = 'The Stake Amount For The Race.' } }, false, function(source, args)
+QBCore.Commands.Add(Config.Commands.CreateRace, 'Start A Street Race', { { name = 'amount', help = 'The Stake Amount For The Race.' } }, false, function(source, args)
     local src = source
     local amount = tonumber(args[1])
+    
+    
+    
     if GetJoinedRace(QBCore.Functions.GetIdentifier(src, 'license')) == 0 then
         TriggerClientEvent('qb-streetraces:CreateRace', src, amount)
     else
@@ -57,11 +60,11 @@ QBCore.Commands.Add('createrace', 'Start A Street Race', { { name = 'amount', he
     end
 end)
 
-QBCore.Commands.Add('stoprace', 'Stop The Race You Created', {}, false, function(source, _)
+QBCore.Commands.Add(Config.Commands.CancelRace, 'Stop The Race You Created', {}, false, function(source, _)
     CancelRace(source)
 end)
 
-QBCore.Commands.Add('quitrace', 'Get Out Of A Race. (You Will NOT Get Your Money Back!)', {}, false, function(source, _)
+QBCore.Commands.Add(Config.Commands.QuitRace, 'Get Out Of A Race. (You will not get your money back!)', {}, false, function(source, _)
     local src = source
     local RaceId = GetJoinedRace(QBCore.Functions.GetIdentifier(src, 'license'))
     if RaceId ~= 0 then
@@ -69,14 +72,14 @@ QBCore.Commands.Add('quitrace', 'Get Out Of A Race. (You Will NOT Get Your Money
             RemoveFromRace(QBCore.Functions.GetIdentifier(src, 'license'))
             TriggerClientEvent('QBCore:Notify', src, 'You Have Stepped Out Of The Race! And You Lost Your Money', 'error')
         else
-            TriggerClientEvent('QBCore:Notify', src, '/stoprace To Stop The Race', 'error')
+            TriggerClientEvent('QBCore:Notify', src, '/' .. Config.Commands.StopRace .. ' To Stop The Race', 'error')
         end
     else
         TriggerClientEvent('QBCore:Notify', src, 'You Are Not In A Race ', 'error')
     end
 end)
 
-QBCore.Commands.Add('startrace', 'Start The Race', {}, false, function(source)
+QBCore.Commands.Add(Config.Commands.StartRace, 'Start The Race', {}, false, function(source)
     local src = source
     local RaceId = GetCreatedRace(QBCore.Functions.GetIdentifier(src, 'license'))
 
