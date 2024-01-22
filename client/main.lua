@@ -2,7 +2,6 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local Races = {}
 local InRace = false
 local RaceId = 0
-local ShowCountDown = false
 local RaceCount = 5
 
 function DrawText3Ds(x, y, z, text)
@@ -55,12 +54,6 @@ CreateThread(function()
                     end
                 end
             end
-
-            if ShowCountDown then
-                if #(pos - vector3(Races[RaceId].startx, Races[RaceId].starty, Races[RaceId].startz)) < 15.0 and Races[RaceId].started then
-                    DrawText3Ds(Races[RaceId].startx, Races[RaceId].starty, Races[RaceId].startz, "Race start in ~g~"..RaceCount)
-                end
-            end
         end
     end
 end)
@@ -69,6 +62,9 @@ RegisterNetEvent('qb-streetraces:StartRace', function(race)
     if RaceId ~= 0 and RaceId == race then
         SetNewWaypoint(Races[RaceId].endx, Races[RaceId].endy)
         InRace = true
+        SendNUIMessage({
+            action = "SHOW_UI"
+        });
         RaceCountDown()
     end
 end)
@@ -84,6 +80,9 @@ end)
 RegisterNetEvent('qb-streetraces:StopRace', function()
     RaceId = 0
     InRace = false
+    SendNUIMessage({
+        action = "HIDE_UI"
+    });
 end)
 
 RegisterNetEvent('qb-streetraces:CreateRace', function(amount)
@@ -107,6 +106,9 @@ RegisterNetEvent('qb-streetraces:CreateRace', function(amount)
             }
             TriggerServerEvent("qb-streetraces:NewRace", race)
             QBCore.Functions.Notify("Race Made For "..Config.Currency..amount.."", "success")
+            SendNUIMessage({
+                action = "SHOW_UI"
+            });
         else
             QBCore.Functions.Notify("End Position Is Too Close", "error")
         end
@@ -124,17 +126,40 @@ RegisterNetEvent('qb-streetraces:SetRaceId', function(race)
     SetNewWaypoint(Races[RaceId].endx, Races[RaceId].endy)
 end)
 
+function FreezeCar() 
+    FreezeEntityPosition(GetVehiclePedIsIn(PlayerPedId(), true), true)
+end
+
+function UnfreezeCar()
+    FreezeEntityPosition(GetVehiclePedIsIn(PlayerPedId(), true), false)
+end
+
 function RaceCountDown()
-    ShowCountDown = true
+    SendNUIMessage({
+        action = "SHOW_UI"
+    });
+    FreezeCar()
+    Wait(3000)
     while RaceCount ~= 0 do
-        FreezeEntityPosition(GetVehiclePedIsIn(PlayerPedId(), true), true)
+        FreezeCar()
         PlaySound(-1, "slow", "SHORT_PLAYER_SWITCH_SOUND_SET", 0, 0, 1)
-        QBCore.Functions.Notify(RaceCount, 'primary', 800)
-        Wait(1000)
+        SendNUIMessage({
+            action = "COUNTDOWN",
+            payload = RaceCount
+        });
+        Wait(1500)
         RaceCount = RaceCount - 1
     end
-    ShowCountDown = false
+    SendNUIMessage({
+        action = "COUNTDOWN",
+        payload = "GO"
+    });
     RaceCount = 5
-    FreezeEntityPosition(GetVehiclePedIsIn(PlayerPedId(), true), false)
-    QBCore.Functions.Notify("GOOOOOOOOO!!!")
+    UnfreezeCar()
+    Wait(3000)
+    SendNUIMessage({
+        action = "HIDE_UI"
+    });
+    Wait(800)
+    Wait(3000)
 end

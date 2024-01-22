@@ -47,10 +47,16 @@ RegisterNetEvent('qb-streetraces:JoinRace', function(RaceId)
     end
 end)
 
+print(Config.Commands.CreateRace)
+
 QBCore.Commands.Add(Config.Commands.CreateRace, 'Start A Street Race', { { name = 'amount', help = 'The Stake Amount For The Race.' } }, false, function(source, args)
     local src = source
     local amount = tonumber(args[1])
-    
+
+    if not amount then return TriggerClientEvent('QBCore:Notify', src, 'Usage: /'..Config.Commands.CreateRace..' [AMOUNT]', 'error') end
+    if amount < Config.MinimumStake then 
+        return TriggerClientEvent('QBCore:Notify', src, 'The minimum stake is '..Config.Currency..Config.MinimumStake, 'error') 
+    end
     
     
     if GetJoinedRace(QBCore.Functions.GetIdentifier(src, 'license')) == 0 then
@@ -72,7 +78,7 @@ QBCore.Commands.Add(Config.Commands.QuitRace, 'Get Out Of A Race. (You will not 
             RemoveFromRace(QBCore.Functions.GetIdentifier(src, 'license'))
             TriggerClientEvent('QBCore:Notify', src, 'You Have Stepped Out Of The Race! And You Lost Your Money', 'error')
         else
-            TriggerClientEvent('QBCore:Notify', src, '/' .. Config.Commands.StopRace .. ' To Stop The Race', 'error')
+            TriggerClientEvent('QBCore:Notify', src, '/' .. Config.Commands.CancelRace .. ' To Stop The Race', 'error')
         end
     else
         TriggerClientEvent('QBCore:Notify', src, 'You Are Not In A Race ', 'error')
