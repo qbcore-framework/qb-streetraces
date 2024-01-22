@@ -12,7 +12,9 @@ RegisterNetEvent('qb-streetraces:NewRace', function(RaceTable)
         Races[RaceId].joined[#Races[RaceId].joined + 1] = QBCore.Functions.GetIdentifier(src, 'license')
         TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
         TriggerClientEvent('qb-streetraces:SetRaceId', src, RaceId)
-        TriggerClientEvent('QBCore:Notify', src, 'You joind the race for ' .. Config.Currency .. Races[RaceId].amount .. ',-', 'success')
+        TriggerClientEvent('QBCore:Notify', src, 'You joined the race for ' .. Config.Currency .. Races[RaceId].amount .. '.', 'success')
+    else
+        TriggerClientEvent('QBCore:Notify', src, 'You do not have ' .. Config.Currency .. RaceTable.amount .. '.', 'error')
     end
 end)
 

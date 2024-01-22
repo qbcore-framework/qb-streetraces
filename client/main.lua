@@ -105,10 +105,6 @@ RegisterNetEvent('qb-streetraces:CreateRace', function(amount)
                 joined = {}
             }
             TriggerServerEvent("qb-streetraces:NewRace", race)
-            QBCore.Functions.Notify("Race Made For "..Config.Currency..amount.."", "success")
-            SendNUIMessage({
-                action = "SHOW_UI"
-            });
         else
             QBCore.Functions.Notify("End Position Is Too Close", "error")
         end
@@ -124,6 +120,9 @@ end)
 RegisterNetEvent('qb-streetraces:SetRaceId', function(race)
     RaceId = race
     SetNewWaypoint(Races[RaceId].endx, Races[RaceId].endy)
+    SendNUIMessage({
+        action = "SHOW_UI"
+    });
 end)
 
 function FreezeCar()
