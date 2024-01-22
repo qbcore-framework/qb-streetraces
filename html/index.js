@@ -7,11 +7,15 @@ let Lights = [
 ]
 
 window.addEventListener("message", function (event) {
-    if (event.data.action == "SHOW_UI") return $("#UI").fadeIn(500);
+    if (event.data.action == "SHOW_UI") {
+        Lights.forEach(Light => {
+            $(Light).removeClass("red green");
+        })
+        return $("#UI").fadeIn(500);
+    }
     if (event.data.action == "HIDE_UI") return $("#UI").fadeOut(1500);
     if (event.data.action == "COUNTDOWN") {
         let Count = event.data.payload;
-        console.log(Count);
         if (Count == "GO") {
             Lights.forEach(Light => {
                 $(Light).addClass("green").removeClass("red");
