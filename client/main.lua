@@ -126,7 +126,7 @@ RegisterNetEvent('qb-streetraces:SetRaceId', function(race)
     SetNewWaypoint(Races[RaceId].endx, Races[RaceId].endy)
 end)
 
-function FreezeCar() 
+function FreezeCar()
     FreezeEntityPosition(GetVehiclePedIsIn(PlayerPedId(), true), true)
 end
 

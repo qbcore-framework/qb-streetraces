@@ -54,8 +54,11 @@ QBCore.Commands.Add(Config.Commands.CreateRace, 'Start A Street Race', { { name 
     local amount = tonumber(args[1])
 
     if not amount then return TriggerClientEvent('QBCore:Notify', src, 'Usage: /'..Config.Commands.CreateRace..' [AMOUNT]', 'error') end
-    if amount < Config.MinimumStake then 
-        return TriggerClientEvent('QBCore:Notify', src, 'The minimum stake is '..Config.Currency..Config.MinimumStake, 'error') 
+    if amount < Config.MinimumStake then
+        return TriggerClientEvent('QBCore:Notify', src, 'The minimum stake is '..Config.Currency..Config.MinimumStake, 'error')
+    end
+    if amount > Config.MaximumStake then
+        return TriggerClientEvent('QBCore:Notify', src, 'The maximum stake is '..Config.Currency..Config.MaximumStake, 'error')
     end
     
     
