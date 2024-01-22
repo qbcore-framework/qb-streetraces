@@ -30,7 +30,7 @@ CreateThread(function()
                 for k in pairs(Races) do
                     if Races[k] ~= nil then
                         if #(pos - vector3(Races[k].startx, Races[k].starty, Races[k].startz)) < 15.0 and not Races[k].started then
-                            DrawText3Ds(Races[k].startx, Races[k].starty, Races[k].startz, "[~g~H~w~] To Join The Race (~g~$"..Races[k].amount..",-~w~)")
+                            DrawText3Ds(Races[k].startx, Races[k].starty, Races[k].startz, "[~g~H~w~] To Join The Race (~g~"..Config.Currency..Races[k].amount..",-~w~)")
                             if IsControlJustReleased(0, 74) then
                                 TriggerServerEvent("qb-streetraces:JoinRace", k)
                             end
@@ -91,7 +91,7 @@ RegisterNetEvent('qb-streetraces:CreateRace', function(amount)
     local WaypointHandle = GetFirstBlipInfoId(8)
     if DoesBlipExist(WaypointHandle) then
         local c = GetBlipInfoIdCoord(WaypointHandle)
-        if #(pos - c) > 500.0 then
+        if #(pos - c) > Config.MinimumRaceDistance then
             local race = {
                 creator = nil,
                 started = false,
@@ -106,7 +106,7 @@ RegisterNetEvent('qb-streetraces:CreateRace', function(amount)
                 joined = {}
             }
             TriggerServerEvent("qb-streetraces:NewRace", race)
-            QBCore.Functions.Notify("Race Made For $"..amount.."", "success")
+            QBCore.Functions.Notify("Race Made For "..Config.Currency..amount.."", "success")
         else
             QBCore.Functions.Notify("End Position Is Too Close", "error")
         end

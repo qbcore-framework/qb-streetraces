@@ -2,8 +2,9 @@ fx_version 'cerulean'
 game 'gta5'
 
 description 'QB-StreetRaces'
-version '1.2.0'
+version '1.3.0'
 
+shared_script 'config.lua'
 client_script 'client/main.lua'
 server_script'server/main.lua'
 
