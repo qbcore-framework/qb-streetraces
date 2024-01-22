@@ -2,9 +2,9 @@ Config = {}
 
 Config.Currency = "$"
 
-Config.MinimumRaceDistance = 10.0 -- Minimum distance for a race.
-Config.MinimumStake = 10 -- Minimum stake for a race.
-Config.MaximumStake = 1000 -- Minimum stake for a race.
+Config.MinimumRaceDistance = 100.0 -- Minimum distance for a race.
+Config.MinimumStake = 100 -- Minimum stake for a race.
+Config.MaximumStake = 15000 -- Minimum stake for a race.
 
 Config.Commands = {}
 
