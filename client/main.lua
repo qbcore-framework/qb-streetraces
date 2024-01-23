@@ -127,6 +127,15 @@ RegisterNetEvent('qb-streetraces:SetRaceId', function(race)
     });
 end)
 
+RegisterNetEvent('qb-streetraces:UpdateRaceInfo', function(racers, prizepool)
+    SendNUIMessage({
+        action = "UPDATE_RACE_INFO",
+        racers = racers,
+        currency = Config.Currency,
+        prizepool = prizepool,
+    })
+end)
+
 function FreezeCar()
     FreezeEntityPosition(GetVehiclePedIsIn(PlayerPedId(), true), true)
 end

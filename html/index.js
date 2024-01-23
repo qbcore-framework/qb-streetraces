@@ -28,6 +28,12 @@ window.addEventListener("message", function (event) {
         Lights.forEach(Light => {
             $(Light).removeClass("red green");
         })
+
+    }
+    if (event.data.action == "UPDATE_RACE_INFO") {
+        $('#INFO_PRIZEPOOL').html(`${event.data.currency}${event.data.prizepool}`);
+        if (event.data.racers == 1) return $('#INFO_RACERS').html(`${event.data.racers} Racer`);
+        return $('#INFO_RACERS').html(`${event.data.racers} Racers`);
     }
 });
 $("#UI").hide();

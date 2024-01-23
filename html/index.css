@@ -7,12 +7,16 @@ body {
     background: transparent !important;
 }
 
-.container {
+.wrapper {
     position: absolute;
     top: 10vh;
     left: 50%;
     transform: translateX(-50%);
 
+    display: grid;
+}
+
+.container {
     width: 32rem;
     height: 10vh;
     
@@ -24,6 +28,34 @@ body {
     align-content: center;
 }
 
+.container_info {
+    position: relative;
+    width: 32rem;
+    height: 3rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+.info {
+    margin: 1rem;
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 0.5rem;
+    height: 2rem;
+    width: 12rem;
+    color: white;
+    text-align: center;
+    align-items: center;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poppins", "sans-serif";;
+}
+
+
 .light {
     position: relative;
     top: 50%;
@@ -32,8 +64,6 @@ body {
     height: 5rem;
     width: 5rem;
     border-radius: 500px;
-
-    outline: 2px white;
     background-color: rgba(0,0,0,0.6);
 }
 
