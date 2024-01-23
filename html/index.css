@@ -1,0 +1,82 @@
+:root {
+    --red: 255, 0, 0;
+    --green: 4, 222, 0
+}
+
+body {
+    background: transparent !important;
+}
+
+.wrapper {
+    position: absolute;
+    top: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+
+    display: grid;
+}
+
+.container {
+    width: 32rem;
+    height: 10vh;
+    
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-content: center;
+}
+
+.container_info {
+    position: relative;
+    width: 32rem;
+    height: 3rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+}
+
+.info {
+    margin: 1rem;
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 0.5rem;
+    height: 2rem;
+    width: 12rem;
+    color: white;
+    text-align: center;
+    align-items: center;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poppins", "sans-serif";;
+}
+
+
+.light {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+
+    height: 5rem;
+    width: 5rem;
+    border-radius: 500px;
+    background-color: rgba(0,0,0,0.6);
+}
+
+.red {
+    background-color: rgba(var(--red), 0.8);
+    -webkit-box-shadow:0px 0px 20px 0px rgba(var(--red),0.9);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(var(--red),0.9);
+    box-shadow: 0px 0px 20px 0px rgba(var(--red),0.9);
+}
+
+.green {
+    background-color: rgba(var(--green), 0.8);
+    -webkit-box-shadow:0px 0px 20px 0px rgba(var(--green),0.9);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(var(--green),0.9);
+    box-shadow: 0px 0px 20px 0px rgba(var(--green),0.9);
+}
