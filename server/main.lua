@@ -54,15 +54,15 @@ QBCore.Commands.Add(Config.Commands.CreateRace, 'Start A Street Race', { { name 
     local src = source
     local amount = tonumber(args[1])
 
-    if not amount then return TriggerClientEvent('QBCore:Notify', src, 'Usage: /'..Config.Commands.CreateRace..' [AMOUNT]', 'error') end
+    if not amount then return TriggerClientEvent('QBCore:Notify', src, 'Usage: /' .. Config.Commands.CreateRace .. ' [AMOUNT]', 'error') end
     if amount < Config.MinimumStake then
-        return TriggerClientEvent('QBCore:Notify', src, 'The minimum stake is '..Config.Currency..Config.MinimumStake, 'error')
+        return TriggerClientEvent('QBCore:Notify', src, 'The minimum stake is ' .. Config.Currency .. Config.MinimumStake, 'error')
     end
     if amount > Config.MaximumStake then
-        return TriggerClientEvent('QBCore:Notify', src, 'The maximum stake is '..Config.Currency..Config.MaximumStake, 'error')
+        return TriggerClientEvent('QBCore:Notify', src, 'The maximum stake is ' .. Config.Currency .. Config.MaximumStake, 'error')
     end
-    
-    
+
+
     if GetJoinedRace(src) == 0 then
         TriggerClientEvent('qb-streetraces:CreateRace', src, amount)
     else
@@ -84,7 +84,7 @@ QBCore.Commands.Add(Config.Commands.QuitRace, 'Leave A Race', {}, false, functio
 
             Races[RaceId].pot = Races[RaceId].pot - Races[RaceId].amount
             TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
-            
+
             TriggerClientEvent('qb-streetraces:StopRace', src)
             RemoveFromRace(src)
             TriggerClientEvent('QBCore:Notify', src, 'You Have Stepped Out Of The Race!', 'error')

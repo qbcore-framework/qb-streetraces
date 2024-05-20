@@ -1,6 +1,6 @@
 :root {
     --red: 255, 0, 0;
-    --green: 4, 222, 0
+    --green: 4, 222, 0;
 }
 
 body {
@@ -19,8 +19,8 @@ body {
 .container {
     width: 32rem;
     height: 10vh;
-    
-    background-color: rgba(0,0,0,0.3);
+
+    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 1rem;
     display: flex;
     flex-direction: row;
@@ -41,7 +41,7 @@ body {
 
 .info {
     margin: 1rem;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 0.5rem;
     height: 2rem;
     width: 12rem;
@@ -52,9 +52,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-family: "Poppins", "sans-serif";;
+    font-family: "Poppins", "sans-serif";
 }
-
 
 .light {
     position: relative;
@@ -64,19 +63,19 @@ body {
     height: 5rem;
     width: 5rem;
     border-radius: 500px;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .red {
     background-color: rgba(var(--red), 0.8);
-    -webkit-box-shadow:0px 0px 20px 0px rgba(var(--red),0.9);
-    -moz-box-shadow: 0px 0px 20px 0px rgba(var(--red),0.9);
-    box-shadow: 0px 0px 20px 0px rgba(var(--red),0.9);
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(var(--red), 0.9);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(var(--red), 0.9);
+    box-shadow: 0px 0px 20px 0px rgba(var(--red), 0.9);
 }
 
 .green {
     background-color: rgba(var(--green), 0.8);
-    -webkit-box-shadow:0px 0px 20px 0px rgba(var(--green),0.9);
-    -moz-box-shadow: 0px 0px 20px 0px rgba(var(--green),0.9);
-    box-shadow: 0px 0px 20px 0px rgba(var(--green),0.9);
+    -webkit-box-shadow: 0px 0px 20px 0px rgba(var(--green), 0.9);
+    -moz-box-shadow: 0px 0px 20px 0px rgba(var(--green), 0.9);
+    box-shadow: 0px 0px 20px 0px rgba(var(--green), 0.9);
 }
