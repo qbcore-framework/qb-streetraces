@@ -1,11 +1,80 @@
-local QBCore = exports['qb-core']:GetCoreObject()
-
+local QBCore = exports['qb-core']:GetCoreObject({ 'Commands' })
 local Races = {}
+
+-- Functions
+
+local function GetCreatedRace(identifier)
+    for key in pairs(Races) do
+        if Races[key] ~= nil and Races[key].creator == identifier and not Races[key].started then
+            return key
+        end
+    end
+    return 0
+end
+
+local function CancelRace(source)
+    local RaceId = GetCreatedRace(source)
+    local Player = exports['qb-core']:GetPlayer(source)
+    if RaceId ~= 0 then
+        for key in pairs(Races) do
+            if Races[key] ~= nil and Races[key].creator == source then
+                if not Races[key].started then
+                    for _, iden in pairs(Races[key].joined) do
+                        local xdPlayer = exports['qb-core']:GetPlayer(iden)
+                        xdPlayer.Functions.AddMoney('cash', Races[key].amount, 'Race')
+                        TriggerClientEvent('QBCore:Notify', xdPlayer.PlayerData.source, 'Race Has Ended, You Got Back ' .. Config.Currency .. Races[key].amount .. '', 'error')
+                        TriggerClientEvent('qb-streetraces:StopRace', xdPlayer.PlayerData.source)
+                    end
+                else
+                    TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, 'The Race Has Already Started', 'error')
+                end
+                TriggerClientEvent('QBCore:Notify', source, 'Race Stopped!', 'error')
+                Races[key] = nil
+            end
+        end
+        TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
+    else
+        TriggerClientEvent('QBCore:Notify', source, 'You Have Not Started A Race!', 'error')
+    end
+end
+
+local function UpdateRaceInfo(race)
+    for _, src in pairs(race.joined) do
+        TriggerClientEvent('qb-streetraces:UpdateRaceInfo', src, #race.joined, race.pot)
+    end
+end
+
+function RemoveFromRace(identifier)
+    for key in pairs(Races) do
+        if Races[key] ~= nil and not Races[key].started then
+            for i, iden in pairs(Races[key].joined) do
+                if iden == identifier then
+                    table.remove(Races[key].joined, i)
+                end
+            end
+        end
+    end
+end
+
+local function GetJoinedRace(identifier)
+    for key in pairs(Races) do
+        if Races[key] ~= nil and not Races[key].started then
+            for _, iden in pairs(Races[key].joined) do
+                if iden == identifier then
+                    return key
+                end
+            end
+        end
+    end
+    return 0
+end
+
+-- Events
 
 RegisterNetEvent('qb-streetraces:NewRace', function(RaceTable)
     local src = source
     local RaceId = math.random(1000, 9999)
-    local xPlayer = QBCore.Functions.GetPlayer(src)
+    local xPlayer = exports['qb-core']:GetPlayer(src)
     if xPlayer.Functions.RemoveMoney('cash', RaceTable.amount, 'streetrace-created') then
         Races[RaceId] = RaceTable
         Races[RaceId].creator = src
@@ -21,7 +90,7 @@ end)
 
 RegisterNetEvent('qb-streetraces:RaceWon', function(RaceId)
     local src = source
-    local xPlayer = QBCore.Functions.GetPlayer(src)
+    local xPlayer = exports['qb-core']:GetPlayer(src)
     xPlayer.Functions.AddMoney('cash', Races[RaceId].pot, 'race-won')
     TriggerClientEvent('QBCore:Notify', src, 'You won the race and ' .. Config.Currency .. Races[RaceId].pot .. ',- recieved', 'success')
     TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
@@ -30,8 +99,8 @@ end)
 
 RegisterNetEvent('qb-streetraces:JoinRace', function(RaceId)
     local src = source
-    local xPlayer = QBCore.Functions.GetPlayer(src)
-    local zPlayer = QBCore.Functions.GetPlayer(Races[RaceId].creator)
+    local xPlayer = exports['qb-core']:GetPlayer(src)
+    local zPlayer = exports['qb-core']:GetPlayer(Races[RaceId].creator)
     if zPlayer ~= nil then
         if xPlayer.Functions.RemoveMoney('cash', Races[RaceId].amount, 'streetrace-joined') then
             Races[RaceId].pot = Races[RaceId].pot + Races[RaceId].amount
@@ -49,6 +118,8 @@ RegisterNetEvent('qb-streetraces:JoinRace', function(RaceId)
         Races[RaceId] = {}
     end
 end)
+
+-- Commands
 
 QBCore.Commands.Add(Config.Commands.CreateRace, 'Start A Street Race', { { name = 'amount', help = 'The Stake Amount For The Race.' } }, false, function(source, args)
     local src = source
@@ -79,7 +150,7 @@ QBCore.Commands.Add(Config.Commands.QuitRace, 'Leave A Race', {}, false, functio
     local RaceId = GetJoinedRace(src)
     if RaceId ~= 0 then
         if GetCreatedRace(src) ~= RaceId then
-            local xPlayer = QBCore.Functions.GetPlayer(src)
+            local xPlayer = exports['qb-core']:GetPlayer(src)
             xPlayer.Functions.AddMoney('cash', Races[RaceId].amount, 'Race Quit')
 
             Races[RaceId].pot = Races[RaceId].pot - Races[RaceId].amount
@@ -109,70 +180,3 @@ QBCore.Commands.Add(Config.Commands.StartRace, 'Start The Race', {}, false, func
         TriggerClientEvent('QBCore:Notify', src, 'You Have Not Started A Race', 'error')
     end
 end)
-
-function CancelRace(source)
-    local RaceId = GetCreatedRace(source)
-    local Player = QBCore.Functions.GetPlayer(source)
-
-    if RaceId ~= 0 then
-        for key in pairs(Races) do
-            if Races[key] ~= nil and Races[key].creator == source then
-                if not Races[key].started then
-                    for _, iden in pairs(Races[key].joined) do
-                        local xdPlayer = QBCore.Functions.GetPlayer(iden)
-                        xdPlayer.Functions.AddMoney('cash', Races[key].amount, 'Race')
-                        TriggerClientEvent('QBCore:Notify', xdPlayer.PlayerData.source, 'Race Has Ended, You Got Back ' .. Config.Currency .. Races[key].amount .. '', 'error')
-                        TriggerClientEvent('qb-streetraces:StopRace', xdPlayer.PlayerData.source)
-                    end
-                else
-                    TriggerClientEvent('QBCore:Notify', Player.PlayerData.source, 'The Race Has Already Started', 'error')
-                end
-                TriggerClientEvent('QBCore:Notify', source, 'Race Stopped!', 'error')
-                Races[key] = nil
-            end
-        end
-        TriggerClientEvent('qb-streetraces:SetRace', -1, Races)
-    else
-        TriggerClientEvent('QBCore:Notify', source, 'You Have Not Started A Race!', 'error')
-    end
-end
-
-function UpdateRaceInfo(race)
-    for _, src in pairs(race.joined) do
-        TriggerClientEvent('qb-streetraces:UpdateRaceInfo', src, #race.joined, race.pot)
-    end
-end
-
-function RemoveFromRace(identifier)
-    for key in pairs(Races) do
-        if Races[key] ~= nil and not Races[key].started then
-            for i, iden in pairs(Races[key].joined) do
-                if iden == identifier then
-                    table.remove(Races[key].joined, i)
-                end
-            end
-        end
-    end
-end
-
-function GetJoinedRace(identifier)
-    for key in pairs(Races) do
-        if Races[key] ~= nil and not Races[key].started then
-            for _, iden in pairs(Races[key].joined) do
-                if iden == identifier then
-                    return key
-                end
-            end
-        end
-    end
-    return 0
-end
-
-function GetCreatedRace(identifier)
-    for key in pairs(Races) do
-        if Races[key] ~= nil and Races[key].creator == identifier and not Races[key].started then
-            return key
-        end
-    end
-    return 0
-end
